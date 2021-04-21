@@ -3,6 +3,8 @@ package teller;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Collection;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class BankTest {
@@ -23,5 +25,36 @@ public class BankTest {
         underTest.add(account1);
         BankAccount retrieveAccount = underTest.findAccount("1");
         assertEquals(retrieveAccount, account1);
+    }
+
+    @Test
+    public void shouldBeAbleToAddTwoAccounts(){
+        underTest.add(account1);
+        underTest.add(account2);
+        Collection<BankAccount> allAccounts = underTest.getAllAccounts();
+        assertEquals(2, allAccounts.size());
+
+    }
+
+    @Test
+    public void shouldBeAbleToRemoveAnAccount(){
+        underTest.add(account1);
+        underTest.close(account1);
+        BankAccount retrieveAccount = underTest.findAccount("1");
+        assertEquals(retrieveAccount, null);
+    }
+
+    @Test
+    public void shouldWithdrawalFromAccount(){
+        underTest.add(account1);
+        underTest.withdrawal(account1.getAccountNumber(), 50);
+        assertEquals(account1.getBalance(), 50);
+    }
+
+    @Test
+    public void shouldDepositToAnAccount(){
+        underTest.add(account1);
+        underTest.deposit(account1.getAccountNumber(), 100);
+        assertEquals(account1.getBalance(), 200);
     }
 }
